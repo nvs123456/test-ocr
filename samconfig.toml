@@ -18,7 +18,7 @@ capabilities = "CAPABILITY_IAM"
 confirm_changeset = false
 region = "us-east-1"
 disable_rollback = false
-image_repositories = ["HealthCheckFunction=529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest"]
+#image_repositories = ["HealthCheckFunction=529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest"]
 parameter_overrides = "Region=\"us-east-1\" env=\"dev\""
 
 [default.package.parameters]
