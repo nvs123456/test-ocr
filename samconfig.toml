@@ -17,6 +17,7 @@ s3_prefix = "test-ocr"
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = false
 region = "us-east-1"
+resolve_s3 = true
 disable_rollback = false
 #image_repositories = ["HealthCheckFunction=529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest"]
 parameter_overrides = "Region=\"us-east-1\" env=\"dev\""
