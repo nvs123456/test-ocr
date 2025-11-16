@@ -93,8 +93,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'test-ocr-api-health-check'
-      PackageType: Image
-      ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
+      # PackageType: Image
+      # ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
+      Runtime: nodejs18.x
+      Handler: handler.handler            # hoặc handler.handler nếu dùng handler.js
+      CodeUri: ./
       Policies:
         - Statement:
           - Effect: Allow
