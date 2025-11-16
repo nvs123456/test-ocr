@@ -22,26 +22,8 @@ Globals:
       AllowOrigin: "'*'"
       MaxAge: 3000
       AllowCredentials: "'true'"
-Parameters:
-  Region:
-    Type: String
-    Default: ap-northeast-1
-  env:
-    Type: String
-    Default: stg
-    AllowedValues:
-      - dev
-      - stg
-      - p
-  SecurityGroupIds:
-    Type: String
-    Description: "Comma-delimited list of security group IDs"
-  SubnetIds:
-    Type: String
-    Description: "Comma-delimited list of subnet IDs"
-  RegionName:
-    Type: String
-    NoEcho: true
+
+
 
 Resources:
   # API GATEWAY
