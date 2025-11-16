@@ -134,7 +134,7 @@ Resources:
               Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
 
   # LAMBDA FUNCTIONS
-  DatasetJobFunction:
+  HealthCheckFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'test-ocr-api-health-check'
