@@ -23,4 +23,4 @@ jobs:
       # Prevent prompts and failure when the stack is unchanged
       - run: rm -rf .aws-sam/build
 
-      - run: sam deploy 
+      - run: sam deploy --resolve-image-repos
