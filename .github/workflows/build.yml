@@ -19,9 +19,9 @@ jobs:
           role-session-name: ci
           aws-region: us-east-1
       # Build inside Docker containers
-      # - run: sam build --use-container
+      - run: sam build
       # Prevent prompts and failure when the stack is unchanged
-      - run: ls -la 
-      - run: rm -rf .aws-sam/build
+      - run: sam validate --template-file .aws-sam/build/template.yaml
+      # - run: rm -rf .aws-sam/build
 
       - run: sam deploy
