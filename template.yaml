@@ -11,9 +11,6 @@ Globals:
     Tracing: Active
     LoggingConfig:
       LogFormat: JSON
-    Environment:
-      Variables:
-        DB_RDS_HOST: !Ref DbRdsHost
 
   Api:
     Cors:
@@ -119,7 +116,7 @@ Resources:
   #       - python3.12
   #     LicenseInfo: MIT
 
-Outputs:
-  ApiUrl:
-    Description: "API Gateway endpoint URL"
-    Value: !Sub "https://${env}-api.execute-api.${AWS::Region}.amazonaws.com/Stage/"
+# Outputs:
+#   ApiUrl:
+#     Description: "API Gateway endpoint URL"
+#     Value: !Sub "https://test-ocr-api.execute-api.${AWS::Region}.amazonaws.com/Stage/"
