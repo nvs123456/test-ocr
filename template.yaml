@@ -1,0 +1,173 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Apiste APA 31 API
+
+  Sample SAM Template for Apiste
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+# sam deploy --profile ai-role --config-file samconfig.toml
+Globals:
+  Function:
+    Timeout: 900
+    MemorySize: 2048
+    Tracing: Active
+    LoggingConfig:
+      LogFormat: JSON
+    Environment:
+      Variables:
+        DB_RDS_HOST: !Ref DbRdsHost
+        DB_PORT: 5432
+        LOG_LEVEL: INFO
+        ENV: !Sub '${env}'
+        DB_USER: !Ref DbUser
+        DB_PASSWORD: !Ref DbPassword
+        DB_NAME: !Ref DbName
+
+        USER_DB_RDS_HOST: !Ref DbRdsHostUser
+        USER_DB_PORT: 5432
+        USER_DB_USER: !Ref UserDbUser
+        USER_DB_PASSWORD: !Ref UserDbPass
+        USER_DB_NAME: !Ref UserDbName
+
+        MIGRATE_DB_RDS_HOST: !Ref MigrateDbRdsHost
+        MIGRATE_DB_PORT: 5432
+        MIGRATE_DB_USER: !Ref MigrateDbUser
+        MIGRATE_DB_PASSWORD: !Ref MigrateDbPassword
+        MIGRATE_DB_NAME: !Ref MigrateDbName
+
+        SES_SENDER_EMAIL: !Ref SesSenderEmail
+        APISTE_BASE_URL: !Ref ApisteBaseUrl
+        REGION_NAME: !Ref Region
+        SMTP_USERNAME: !Ref SmtpUser
+        SMTP_PASSWORD: !Ref SmtpPass
+        CUSTOM_AWS_REGION: !Ref CustomAwsRegion
+        API_DATASET_BASE_URL: !Ref ApiDatasetBaseUrl
+        API_TRAINING_BASE_URL: !Ref ApiTrainingBaseUrl
+        USER_BASE_URL: !Ref UserBaseUrl
+        AI_DEMO_BASE_URL: !Ref AiDemoBaseUrl
+        AI_PROCESS_BASE_URL: !Ref AiProcessBaseUrl
+        AWS_BUCKET_NAME: !Ref AwsBuckName
+        JWT_EXPIRE_MINUTES: !Ref JwtExpireMinutes
+        JWT_REFRESH_EXPIRE_MINUTES: !Ref JwtRefreshExpireMinutes
+
+        SORACOM_SIM_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomSimManagementAuthKeyId
+        SORACOM_SIM_MANAGEMENT_AUTH_KEY: !Ref SoracomSimManagementAuthKey
+
+        SORACOM_ORDER_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomOrderManagementAuthKeyId
+        SORACOM_ORDER_MANAGEMENT_AUTH_KEY: !Ref SoracomOrderManagementAuthKey
+
+        SORACOM_SUBSCRIBER_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomSubscriberManagementAuthKeyId
+        SORACOM_SUBSCRIBER_MANAGEMENT_AUTH_KEY: !Ref SoracomSubscriberManagementAuthKey
+
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+      MaxAge: 3000
+      AllowCredentials: "'true'"
+Parameters:
+  Region:
+    Type: String
+    Default: ap-northeast-1
+  env:
+    Type: String
+    Default: stg
+    AllowedValues:
+      - dev
+      - stg
+      - p
+  SecurityGroupIds:
+    Type: String
+    Description: "Comma-delimited list of security group IDs"
+  SubnetIds:
+    Type: String
+    Description: "Comma-delimited list of subnet IDs"
+  RegionName:
+    Type: String
+    NoEcho: true
+
+Resources:
+  # API GATEWAY
+  TestOCRApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'test-ocr-api'
+      StageName: v1
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+        MaxAge: 3000
+        AllowCredentials: "'true'"
+      GatewayResponses:
+        UNAUTHORIZED:
+          StatusCode: 401
+          ResponseTemplates:
+            application/json: '{"message": "Unauthorized"}'
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Requested-With'"
+              Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        EXPIRED_TOKEN:
+          StatusCode: 401
+          ResponseTemplates:
+            application/json: '{"message": "Token expired"}'
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Requested-With'"
+              Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        DEFAULT_4XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Requested-With'"
+              Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        DEFAULT_5XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Requested-With'"
+              Access-Control-Allow-Methods: "'GET,POST,PUT,DELETE,OPTIONS'"
+
+  # LAMBDA FUNCTIONS
+  DatasetJobFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'test-ocr-api-health-check'
+      ImageUri: public.ecr.aws/v7d2x1v3/ocr:latest
+      Handler: Handler.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      VpcConfig:
+        SecurityGroupIds:
+          - "sg-038d7ff42a9d98eeb"
+        SubnetIds:
+          - "subnet-0003d6450c89b2f7d"
+      # Layers:
+      #   - !Ref CommonApstApiteLayer
+      Events:
+        DatasetJobStatus:
+          Type: Api
+          Properties:
+            Path: /health
+            Method: get
+            RestApiId: !Ref TestOCRApi
+  # CommonApstApiteLayer:
+  #   Type: AWS::Serverless::LayerVersion
+  #   Properties:
+  #     LayerName: common-layer
+  #     Description: A layer containing common code
+  #     ContentUri: src/layer/
+  #     CompatibleRuntimes:
+  #       - python3.12
+  #     LicenseInfo: MIT
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${env}-api.execute-api.${AWS::Region}.amazonaws.com/Stage/"

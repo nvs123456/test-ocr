@@ -1,0 +1,35 @@
+version = 0.1
+
+[default]
+[default.global.parameters]
+stack_name = "test-ocr"
+
+[default.build.parameters]
+cached = false
+parallel = true
+
+[default.validate.parameters]
+lint = true
+
+[default.deploy.parameters]
+stack_name = "test-ocr"
+s3_prefix = "test-ocr"
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = false
+resolve_s3 = true
+region = "us-east-1"
+disable_rollback = false
+image_repositories = []
+parameter_overrides = "Region=\"ap-northeast-1\" env=\"dev\""
+
+[default.package.parameters]
+# resolve_s3 = true
+
+[default.sync.parameters]
+watch = true
+
+[default.local_start_api.parameters]
+warm_containers = "EAGER"
+
+[default.local_start_lambda.parameters]
+warm_containers = "EAGER"

@@ -1,0 +1,14 @@
+samconfig.dev.toml
+template.yaml
+node_modules
+npm-debug.log
+Dockerfile
+.git
+.github
+dist
+build
+*.log
+*.zip
+*.tar
+*.tgz
+.env
