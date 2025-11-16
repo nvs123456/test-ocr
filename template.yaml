@@ -100,7 +100,7 @@ Resources:
     Properties:
       FunctionName: !Sub 'test-ocr-api-health-check'
       PackageType: Image
-      ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
+      # ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
       Architectures:
         - x86_64
       VpcConfig:
