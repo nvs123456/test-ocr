@@ -1,12 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Apiste APA 31 API
 
-  Sample SAM Template for Apiste
+  Sample SAM Template 
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-# sam deploy --profile ai-role --config-file samconfig.toml
 Globals:
   Function:
     Timeout: 900
@@ -17,48 +14,12 @@ Globals:
     Environment:
       Variables:
         DB_RDS_HOST: !Ref DbRdsHost
-        DB_PORT: 5432
-        LOG_LEVEL: INFO
-        ENV: !Sub '${env}'
-        DB_USER: !Ref DbUser
-        DB_PASSWORD: !Ref DbPassword
-        DB_NAME: !Ref DbName
 
-        USER_DB_RDS_HOST: !Ref DbRdsHostUser
-        USER_DB_PORT: 5432
-        USER_DB_USER: !Ref UserDbUser
-        USER_DB_PASSWORD: !Ref UserDbPass
-        USER_DB_NAME: !Ref UserDbName
 
-        MIGRATE_DB_RDS_HOST: !Ref MigrateDbRdsHost
-        MIGRATE_DB_PORT: 5432
-        MIGRATE_DB_USER: !Ref MigrateDbUser
-        MIGRATE_DB_PASSWORD: !Ref MigrateDbPassword
-        MIGRATE_DB_NAME: !Ref MigrateDbName
 
-        SES_SENDER_EMAIL: !Ref SesSenderEmail
-        APISTE_BASE_URL: !Ref ApisteBaseUrl
-        REGION_NAME: !Ref Region
-        SMTP_USERNAME: !Ref SmtpUser
-        SMTP_PASSWORD: !Ref SmtpPass
-        CUSTOM_AWS_REGION: !Ref CustomAwsRegion
-        API_DATASET_BASE_URL: !Ref ApiDatasetBaseUrl
-        API_TRAINING_BASE_URL: !Ref ApiTrainingBaseUrl
-        USER_BASE_URL: !Ref UserBaseUrl
-        AI_DEMO_BASE_URL: !Ref AiDemoBaseUrl
-        AI_PROCESS_BASE_URL: !Ref AiProcessBaseUrl
-        AWS_BUCKET_NAME: !Ref AwsBuckName
-        JWT_EXPIRE_MINUTES: !Ref JwtExpireMinutes
-        JWT_REFRESH_EXPIRE_MINUTES: !Ref JwtRefreshExpireMinutes
+ 
 
-        SORACOM_SIM_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomSimManagementAuthKeyId
-        SORACOM_SIM_MANAGEMENT_AUTH_KEY: !Ref SoracomSimManagementAuthKey
 
-        SORACOM_ORDER_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomOrderManagementAuthKeyId
-        SORACOM_ORDER_MANAGEMENT_AUTH_KEY: !Ref SoracomOrderManagementAuthKey
-
-        SORACOM_SUBSCRIBER_MANAGEMENT_AUTH_KEY_ID: !Ref SoracomSubscriberManagementAuthKeyId
-        SORACOM_SUBSCRIBER_MANAGEMENT_AUTH_KEY: !Ref SoracomSubscriberManagementAuthKey
 
   Api:
     Cors:
@@ -139,7 +100,6 @@ Resources:
     Properties:
       FunctionName: !Sub 'test-ocr-api-health-check'
       PackageType: Image
-      ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
       Handler: Handler.handler
       Runtime: nodejs20.x
       Architectures:
