@@ -96,21 +96,18 @@ Resources:
       PackageType: Image
       ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
       Policies:
-        - PolicyName: AllowEcrPull
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - ecr:GetAuthorizationToken
-                Resource: "*"
-              - Effect: Allow
-                Action:
-                  - ecr:BatchCheckLayerAvailability
-                  - ecr:GetDownloadUrlForLayer
-                  - ecr:BatchGetImage
-                # Giới hạn tới repo cụ thể; đổi nếu muốn nhiều repo hoặc cross-account
-                Resource: "arn:aws:ecr:us-east-1:529928146857:repository/ocr"
+        - Statement:
+          - Effect: Allow
+            Action:
+              - ecr:GetAuthorizationToken
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            # Giới hạn tới repo cụ thể; đổi nếu muốn nhiều repo hoặc cross-account
+            Resource: "arn:aws:ecr:us-east-1:529928146857:repository/ocr"
       Architectures:
         - x86_64
       VpcConfig:
