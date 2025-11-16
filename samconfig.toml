@@ -11,7 +11,6 @@ parallel = true
 [default.validate.parameters]
 lint = true
 
-
 [default.deploy.parameters]
 stack_name = "test-ocr"
 s3_prefix = "test-ocr"
