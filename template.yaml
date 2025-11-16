@@ -139,7 +139,7 @@ Resources:
     Properties:
       FunctionName: !Sub 'test-ocr-api-health-check'
       PackageType: Image
-      ImageUri: public.ecr.aws/v7d2x1v3/ocr:latest
+      ImageUri: 529928146857.dkr.ecr.us-east-1.amazonaws.com/ocr:latest
       Handler: Handler.handler
       Runtime: nodejs20.x
       Architectures:
